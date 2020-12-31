@@ -1,0 +1,46 @@
+{% extends 'common_design.html' %}
+
+{% block title %}
+
+  {{ board.name }} - {{ block.super }}
+
+{% endblock %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item"><a href="{% url 'home' %}">Board</a></li>
+  <li class="breadcrumb-item active">{{ board.name }}</li>
+{% endblock %}
+
+{% block content %}
+  
+  <div class="mb-4">
+    <a href="{% url 'new_topic' board.pk %}" class="btn btn-primary">New topic</a>
+
+    <a href="{% url 'new_board' %}" class="btn btn-primary">New Board</a>
+  </div>
+  
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+      <th>Topic</th>
+        <th>Starter</th>
+        <th>Replies</th>
+        <th>Views</th>
+        <th>Last Update</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topic in board.topics.all %}
+       <tr>
+          <td><a href="{% url 'topic_posts' board.pk topic.pk %}">{{topic.subject}}</td>
+          <td>{{ topic.starter.username }}</td>
+          <td>{{ topic.topics.count }}</td>
+          <td>{{ topic.views }}</td>
+          <td>{{ topic.time_updated }}</td>
+          <td><div class="mb-4"><a href="{% url 'delete_topic' board.pk topic.pk %}" class="btn btn-primary">Delete</a></div><td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

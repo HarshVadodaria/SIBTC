@@ -1,0 +1,52 @@
+{% extends 'common_design.html' %}
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active"><a href="{% url 'home' %}">Board</a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="mb-4">
+    <a href="{% url 'new_board' %}" class="btn btn-primary">New Board</a>
+    
+  </div>
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Board</th>
+        <th>Posts</th>
+        <th>Topics</th>
+        <th>Last Post</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for board in board %}
+        <tr>
+          <td>
+            <a href="{% url 'board_topic' board.pk %}">{{ board.name }}</a>
+            <small class="text-muted d-block">{{ board.description }}</small>
+          </td>
+          <td class="align-middle">
+            {{ board.get_posts_count }}
+          </td>
+          <td class="align-middle">
+            {{ board.topics.count }}
+          </td>
+          <td class="align-middle">
+            {% with post=board.get_last_post %}
+             {% if post %}
+              <small>
+                  By {{ post.created_by }} at {{ post.created_at }}
+                </a>
+              </small>
+             {% else %}
+              <small class="text-muted">
+               <em>No posts yet.</em>
+                </small>
+             {% endif %}
+            {% endwith %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
