@@ -9,6 +9,7 @@ from django.http import HttpResponse
 
 def signup(request):
 	if request.method=="POST":
+		print("hello")
 		form = SignUpForm(request.POST)
 		if form.is_valid():
 			user = form.save()
